@@ -51,5 +51,4 @@ class ImagenesAdmin(admin.ModelAdmin):
     list_display = ['institucion', 'nombre', 'descripcion', 'disponible']
     list_editable = ['disponible']
     list_per_page = 15
-    fields = ['institucion', 'nombre', 'descripcion', 'photo', 'image_tag', 'disponible']
-    readonly_fields = ['image_tag']
+

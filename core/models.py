@@ -62,11 +62,6 @@ class InstImagenes(models.Model):
     photo = models.ImageField('Imagen', upload_to=photo_path, help_text='Imágenes del lugar.')
     disponible = models.BooleanField(default=True)
 
-    def image_tag(self):
-        return mark_safe('<img src="/images/%s" width="150" height="150" />' % self.photo)
-
-    image_tag.short_description = 'Vista Previa'
-
     def __str__(self):
         return self.nombre
 

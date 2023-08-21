@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,3 +20,7 @@ class ProvinciaDetail(APIView):
         poll = get_object_or_404(Provincia, pk=pk)
         data = ProvinciaSerializers(poll).data
         return Response(data)
+
+
+def Index(request):
+    return redirect(reverse_lazy('admin:index'))
