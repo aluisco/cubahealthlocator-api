@@ -1,0 +1,5 @@
+venv/
+.idea/
+__pycache__/
+smcbackend/settings.py
+inst_img/
