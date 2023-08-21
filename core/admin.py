@@ -6,7 +6,7 @@ from .models import *
 class ProvinciaAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
     search_fields = ['nombre']
-    list_display = ['nombre', 'total_int']
+    list_display = ['nombre', 'total_mun', 'total_int']
     list_per_page = 15
 
     def total_int(self, obj):
@@ -14,14 +14,24 @@ class ProvinciaAdmin(admin.ModelAdmin):
 
     total_int.short_description = 'Total de Institucion(es)'
 
+    def total_mun(self, obj):
+        return obj.total_mun
+
+    total_mun.short_description = 'Total de Municipio(s)'
+
 
 @admin.register(Municipio)
 class MunicipioAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
     search_fields = ['provincia', 'nombre']
-    list_display = ['provincia', 'nombre']
+    list_display = ['provincia', 'nombre', 'total_int']
     list_filter = ['provincia']
     list_per_page = 15
+
+    def total_int(self, obj):
+        return obj.total_int
+
+    total_int.short_description = 'Total de Institucion(es)'
 
 
 @admin.register(Institucion)

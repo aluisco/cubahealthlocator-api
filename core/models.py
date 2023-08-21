@@ -14,6 +14,7 @@ def photo_path(instance, filename):
 
 class Provincia(models.Model):
     nombre = models.CharField(max_length=32)
+    total_mun = property(lambda self: self.provincia_id.count())
     total_int = property(lambda self: self.provincia.count())
 
     def __str__(self):
@@ -28,6 +29,7 @@ class Provincia(models.Model):
 class Municipio(models.Model):
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='provincia_id')
     nombre = models.CharField(max_length=32)
+    total_int = property(lambda self: self.municipio.count())
 
     def __str__(self):
         return self.nombre
