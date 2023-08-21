@@ -2,4 +2,4 @@ venv/
 .idea/
 __pycache__/
 smcbackend/settings.py
-inst_img/
+images/inst_img/
