@@ -1,6 +1,5 @@
 import os
 import random
-from django.utils.html import mark_safe
 from django.db import models
 
 

@@ -42,6 +42,7 @@ class InstitucionAdmin(admin.ModelAdmin):
     list_filter = ['municipio']
     list_editable = ['disponible']
     list_per_page = 15
+    fields = ['nombre', 'direccion', 'provincia', 'municipio', 'disponible']
 
 
 @admin.register(InstImagenes)
@@ -51,4 +52,3 @@ class ImagenesAdmin(admin.ModelAdmin):
     list_display = ['institucion', 'nombre', 'descripcion', 'disponible']
     list_editable = ['disponible']
     list_per_page = 15
-
