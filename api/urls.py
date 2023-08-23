@@ -1,6 +1,6 @@
 from django.urls import path
 
-from core.views import ProvinciaList, ProvinciaDetail
+from api.views import ProvinciaList, ProvinciaDetail
 
 urlpatterns = [
     path("provincia/", ProvinciaList.as_view(), name="province_list"),

@@ -3,3 +3,4 @@ venv/
 __pycache__/
 smcbackend/settings.py
 images/inst_img/
+.DS_Store
