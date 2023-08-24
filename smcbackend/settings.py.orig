@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -27,22 +26,27 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
     'core',
+    'api',
+    'baton.autodiscover',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -71,17 +75,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'smcbackend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#       'NAME': BASE_DIR / 'db.sqlite3',
+#   }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'smcbackend',
+        'USER': 'smcbackend',
+        'PASSWORD': 'Px1wEP1i0AVsRaqY',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -101,7 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -113,13 +125,109 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_DIRS = [(BASE_DIR / 'static'), ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_ALL_ORIGINS: True
+
+CORS_ALLOW_METHODS = [
+    'GET',
+]
+
+MEDIA_URL = 'images/'
+MEDIA_ROOT = BASE_DIR / 'images'
+
+BATON = {
+    'SITE_HEADER': 'Servicios Médicos Cubanos',
+    'SITE_TITLE': 'Servicios Médicos Cubanos',
+    'INDEX_TITLE': 'Administración',
+    'SUPPORT_HREF': 'https://github.com/otto-torino/django-baton/issues',
+    'COPYRIGHT': 'Copyright © 2023 <a href="https://www.smcsalud.cu">Servicios Médicos Cubanos S.A</a>',  # noqa
+    'POWERED_BY': '<a href="https://www.otto.to.it">Otto srl</a>',
+    'CONFIRM_UNSAVED_CHANGES': True,
+    'SHOW_MULTIPART_UPLOADING': True,
+    'ENABLE_IMAGES_PREVIEW': True,
+    'CHANGELIST_FILTERS_IN_MODAL': True,
+    'CHANGELIST_FILTERS_ALWAYS_OPEN': False,
+    'CHANGELIST_FILTERS_FORM': True,
+    'MENU_ALWAYS_COLLAPSED': False,
+    'MENU_TITLE': 'Menu',
+    'MESSAGES_TOASTS': False,
+    'GRAVATAR_DEFAULT_IMG': 'retro',
+    'GRAVATAR_ENABLED': True,
+    'LOGIN_SPLASH': '/static/core/img/login-splash.png',
+    'FORCE_THEME': None,
+    'SEARCH_FIELD': {
+        'label': 'Buscar...',
+        'url': '/search/',
+    },
+    'MENU': (
+        {'type': 'title', 'label': 'Usuarios', 'apps': ('auth',)},
+        {
+            'type': 'app',
+            'name': 'auth',
+            'label': 'Autenticación',
+            'icon': 'fa fa-lock',
+            'models': (
+                {
+                    'name': 'user',
+                    'label': 'Usuarios'
+                },
+                {
+                    'name': 'group',
+                    'label': 'Grupos'
+                },
+            )
+        },
+        {'type': 'title', 'label': 'Ubicaciones', 'apps': ('core',)},
+        {
+            'type': 'app',
+            'name': 'core',
+            'label': 'Ubicaciones',
+            'icon': 'fa fa-location-dot',
+            'models': (
+                {
+                    'name': 'provincia',
+                    'label': 'Provincias'
+                },
+                {
+                    'name': 'municipio',
+                    'label': 'Municipios'
+                },
+            )
+        },
+        {'type': 'title', 'label': 'Instituciones', 'apps': ('core',)},
+        {
+            'type': 'app',
+            'name': 'core',
+            'label': 'Instituciones',
+            'icon': 'fa fa-home',
+            'models': (
+                {
+                    'name': 'institucion',
+                    'label': 'Instituciones'
+                },
+                {
+                    'name': 'instimagenes',
+                    'label': 'Imágenes'
+                },
+            )
+        },
+    ),
+}
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 3600
+SESSION_SAVE_EVERY_REQUEST = True
