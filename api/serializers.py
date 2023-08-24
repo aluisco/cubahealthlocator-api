@@ -12,16 +12,16 @@ class ProvinciaSerializers(ModelSerializer):
 class MunicipioSerializers(ModelSerializer):
     class Meta:
         model = Municipio
-        fields = ['__all__']
+        fields = '__all__'
 
 
 class InstitucionSerializers(ModelSerializer):
     class Meta:
         model = Institucion
-        fields = ['__all__']
+        fields = '__all__'
 
 
 class InstImagenesSerializers(ModelSerializer):
     class Meta:
         model = InstImagenes
-        fields = ['__all__']
+        fields = '__all__'
