@@ -12,3 +12,5 @@ urlpatterns = [
     path("imagenes/", ImagenesList.as_view(), name="instimagenes_list"),
     path("imagenes/<int:pk>/", ImagenesDetail.as_view(), name="instimagenes_detail"),
 ]
+
+

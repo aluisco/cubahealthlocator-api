@@ -10,3 +10,7 @@ def dashboard(request):
 
 def logout_view(request):
     logout(request)
+
+
+def error_404_view(request, exception=None):
+    return render(request, '404.html')
