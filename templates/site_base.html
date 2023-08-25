@@ -30,7 +30,7 @@
                     <li>
                         <hr class="dropdown-divider"/>
                     </li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Salir</a></li>
+                    <li><a class="dropdown-item" onclick="exit()">Salir</a></li>
                 </ul>
             </li>
         </ul>
@@ -55,8 +55,8 @@
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                              data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="layout-static.html">Provincia</a>
-                                <a class="nav-link" href="layout-sidenav-light.html">Municipio</a>
+                                <a class="nav-link" href="{% url 'provincia_list' %}">Provincia</a>
+                                <a class="nav-link" href="#">Municipio</a>
                             </nav>
                         </div>
 
@@ -64,9 +64,8 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
                             Instituciones
                         </a>
-
                         <div class="sb-sidenav-menu-heading">&Uacute;tiles</div>
-                        <a class="nav-link" href="charts.html">
+                        <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                             Estadisticas
                         </a>
@@ -83,13 +82,8 @@
             {% endblock content %}
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; SMC SA 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
+                    <div class="d-flex align-items-center float-end small">
+                        <div class="text-muted">Copyright &copy; SMC SA <script>document.write(new Date().getFullYear());</script></div>
                     </div>
                 </div>
             </footer>
@@ -101,6 +95,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
             crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function exit() {
+            Swal.fire({
+                title: '&#191;Realmente desea Salir?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'S&iacute;',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{% url 'logout' %}"
+                }
+            })
+        }
+    </script>
+    {% block extra_js %}{% endblock extra_js %}
     </body>
 {% endblock body %}
 
