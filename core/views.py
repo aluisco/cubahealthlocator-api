@@ -109,6 +109,19 @@ def MunicipioUpdate(request, pk):
         return redirect(reverse_lazy('municipio_list'))
 
 
+@login_required
+@csrf_exempt
+def MunicipioAdd(request):
+    if request.method == 'POST':
+        provincia = request.POST['id']
+        nombre = request.POST['nombre']
+        nuevo = Municipio(nombre=nombre, provincia_id=provincia)
+        nuevo.save()
+        return HttpResponse('')
+    else:
+        return redirect(reverse_lazy('municipio_list'))
+
+
 class InstitucionListView(LoginRequiredMixin, ListView):
     model = Institucion
     template_name = "institucion/institucion.html"
