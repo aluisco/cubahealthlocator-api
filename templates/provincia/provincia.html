@@ -1,0 +1,188 @@
+{% extends 'site_base.html' %}
+{% load static %}
+{% block title %}Provincias{{ supper }}{% endblock title %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">{% endblock extra_styles %}
+{% block content %}
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Provincias</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item">Lugares</li>
+                <li class="breadcrumb-item active">Provincias</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Listado de Provincias
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped" id="data">
+                        <thead>
+                        <tr class="text-center">
+                            <th>No</th>
+                            <th>Nombre</th>
+                            <th>Municipios</th>
+                            <th>Instituciones</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for provincia in object_list %}
+                            <tr class="tr-shadow">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ provincia.nombre }}</td>
+                                <td>{{ provincia.total_mun }}</td>
+                                <td>{{ provincia.total_int }}</td>
+                                <td>
+                                    <button type="button" class="btn small-button btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#editModal" data-bs-whatever="{{ provincia.nombre }}"
+                                            value="{{ provincia.id }}"><i
+                                            class="fas fa-edit"></i>
+                                        Editar
+                                    </button>
+                                    <a class="btn small-button btn-danger"
+                                       href="#" onclick="remove(this.id, {{ provincia.id }})"
+                                       id="delete{{ forloop.counter }}"><i class="fas fa-trash"></i> Borrar</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Provincia</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="provincia-name" class="col-form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="provincia-name">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="id_provincia">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="change_name()">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+{% block extra_js %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="application/javascript">
+        $(function () {
+            const editModal = document.getElementById('editModal')
+            editModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget
+                const provincia = button.getAttribute('data-bs-whatever')
+                const id = button.getAttribute('value')
+                const modalTitle = editModal.querySelector('.modal-title')
+                const modalBodyInput = editModal.querySelector('.modal-body input')
+                const modalFooterInput = editModal.querySelector('.modal-footer input')
+                modalTitle.textContent = 'Cambiar Nombre ' + provincia
+                modalBodyInput.value = provincia
+                modalFooterInput.value = id
+            });
+        });
+
+        $(function () {
+            $('#data').DataTable({
+                responsive: true,
+                autoWidth: false,
+                destroy: true,
+                deferRender: true,
+                searching: true,
+                language: {
+                    url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                },
+            });
+        });
+
+        function remove(id, p_id) {
+            Swal.fire({
+                title: '&#191;Est&aacute; seguro?',
+                text: "¡Esta acción no se puede revertir!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '&#161;S&iacute;, borrar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let table = $('#data').DataTable();
+                    let index = document.getElementById(id).closest('tr');
+                    table.row(index).remove().draw();
+                    Swal.fire(
+                        '&#161;Borrado!',
+                        'La entrada de la Provincia ha sido eliminada.',
+                        'success'
+                    )
+                    delete_item(p_id);
+                }
+            })
+        }
+
+        function delete_item(p_id) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'provincia_delete' 1234 %}".replace(/1234/, p_id),
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'request_data': p_id},
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+
+        function change_name() {
+            Swal.fire({
+                title: '&#191;Est&aacute; seguro?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '&#161;S&iacute;, editar!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let nombre = document.getElementById('provincia-name').value;
+                    let p_id = document.getElementById('id_provincia').value;
+                    $('#editModal').modal('hide');
+                    Swal.fire(
+                        '&#161;Editado!',
+                        'La entrada de la Provincia fue editada.',
+                        'success'
+                    )
+                    update(p_id, nombre);
+                } else {
+                    $('#editModal').modal('hide');
+                }
+            })
+        }
+
+        function update(p_id, nombre) {
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'provincia_edit' 1234 %}".replace(/1234/, p_id),
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'pk': p_id, 'nombre': nombre},
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+{% endblock extra_js %}

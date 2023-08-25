@@ -13,8 +13,8 @@ def photo_path(instance, filename):
 
 class Provincia(models.Model):
     nombre = models.CharField(max_length=32)
-    total_mun = property(lambda self: self.provincia_id.count())
-    total_int = property(lambda self: self.provincia.count())
+    total_mun = property(lambda self: self.municipio.count())
+    total_int = property(lambda self: self.institucion.count())
 
     def __str__(self):
         return self.nombre
@@ -26,9 +26,9 @@ class Provincia(models.Model):
 
 
 class Municipio(models.Model):
-    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='provincia_id')
+    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='municipio')
     nombre = models.CharField(max_length=32)
-    total_int = property(lambda self: self.municipio.count())
+    total_int = property(lambda self: self.institucion.count())
 
     def __str__(self):
         return self.nombre
@@ -42,8 +42,8 @@ class Municipio(models.Model):
 class Institucion(models.Model):
     nombre = models.CharField(max_length=64)
     direccion = models.CharField(max_length=150)
-    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='provincia')
-    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='municipio')
+    provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='institucion')
+    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='institucion')
     disponible = models.BooleanField(default=True)
 
     def __str__(self):
@@ -55,7 +55,7 @@ class Institucion(models.Model):
 
 
 class InstImagenes(models.Model):
-    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE, related_name='institucion_id')
+    institucion = models.ForeignKey(Institucion, on_delete=models.CASCADE, related_name='imagenes')
     nombre = models.CharField(max_length=32)
     descripcion = models.TextField(u'Descripción', help_text='Descripción de la Imagen.')
     photo = models.ImageField('Imagen', upload_to=photo_path, help_text='Imágenes del lugar.')
