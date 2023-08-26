@@ -12,7 +12,7 @@ def photo_path(instance, filename):
 
 
 class Provincia(models.Model):
-    nombre = models.CharField(max_length=32)
+    nombre = models.CharField(max_length=32, unique=True, blank=False, null=False)
     total_mun = property(lambda self: self.municipio.count())
     total_int = property(lambda self: self.institucion.count())
 
@@ -27,7 +27,7 @@ class Provincia(models.Model):
 
 class Municipio(models.Model):
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='municipio')
-    nombre = models.CharField(max_length=32)
+    nombre = models.CharField(max_length=32, unique=True, blank=False, null=False)
     total_int = property(lambda self: self.institucion.count())
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Municipio(models.Model):
 
 
 class Institucion(models.Model):
-    nombre = models.CharField(max_length=64)
+    nombre = models.CharField(max_length=64, blank=False, null=False)
     direccion = models.CharField(max_length=150)
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='institucion')
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='institucion')

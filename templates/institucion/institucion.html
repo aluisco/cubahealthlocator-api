@@ -39,14 +39,14 @@
                                 <td>{{ institucion.provincia.nombre }}</td>
                                 <td>{{ institucion.municipio.nombre }}</td>
                                 <td>{{ institucion.imagenes.count }}</td>
-                                <td>
-                                    <button type="button" class="btn small-button btn-primary" data-bs-toggle="modal"
+                                <td><a class="btn btn-sm btn-success"><i class="fas fa-camera"></i> Im&aacute;genes</a>
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#editModal" data-bs-whatever="{{ municipio.nombre }}"
                                             value="{{ municipio.id }}"><i
                                             class="fas fa-edit"></i>
                                         Editar
                                     </button>
-                                    <a class="btn small-button btn-danger"
+                                    <a class="btn btn-sm btn-danger"
                                        href="#" onclick="remove(this.id, {{ municipio.id }})"
                                        id="delete{{ forloop.counter }}"><i class="fas fa-trash"></i> Borrar</a>
                                 </td>
