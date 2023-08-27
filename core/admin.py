@@ -2,6 +2,11 @@ from django.contrib import admin
 from core.models import *
 
 
+class ImageInline(admin.TabularInline):
+    model = InstImagenes
+    extra = 1
+
+
 @admin.register(Provincia)
 class ProvinciaAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
@@ -38,17 +43,16 @@ class MunicipioAdmin(admin.ModelAdmin):
 class InstitucionAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
     search_fields = ['nombre']
-    list_display = ['nombre', 'direccion', 'municipio', 'disponible']
+    list_display = ['nombre', 'direccion', 'provincia', 'municipio', 'cant_images', 'disponible']
     list_filter = ['municipio']
     list_editable = ['disponible']
     list_per_page = 15
-    fields = ['nombre', 'direccion', 'provincia', 'municipio', 'disponible']
+    fields = ['nombre', 'direccion', 'descripcion', 'provincia', 'municipio', 'disponible']
+    inlines = [
+        ImageInline,
+    ]
 
+    def cant_images(self, obj):
+        return obj.cant_images
 
-@admin.register(InstImagenes)
-class ImagenesAdmin(admin.ModelAdmin):
-    empty_value_display = '-No hay datos-'
-    search_fields = ['nombre', 'descripcion']
-    list_display = ['institucion', 'nombre', 'descripcion', 'disponible']
-    list_editable = ['disponible']
-    list_per_page = 15
+    cant_images.short_description = 'Cant. Imagen(es)'

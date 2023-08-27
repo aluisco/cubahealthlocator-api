@@ -1,6 +1,9 @@
 import os
 import random
+
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 def photo_path(instance, filename):
@@ -13,6 +16,8 @@ def photo_path(instance, filename):
 
 class Provincia(models.Model):
     nombre = models.CharField(max_length=32, unique=True, blank=False, null=False)
+    descripcion = models.TextField()
+    imagen = models.ImageField('Imagen', upload_to='provincia', help_text='Imagen de la Provincia.')
     total_mun = property(lambda self: self.municipio.count())
     total_int = property(lambda self: self.institucion.count())
 
@@ -28,6 +33,8 @@ class Provincia(models.Model):
 class Municipio(models.Model):
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='municipio')
     nombre = models.CharField(max_length=32, unique=True, blank=False, null=False)
+    descripcion = models.TextField()
+    imagen = models.ImageField('Imagen', upload_to='municipio', help_text='Imagen del Municipio.')
     total_int = property(lambda self: self.institucion.count())
 
     def __str__(self):
@@ -42,9 +49,11 @@ class Municipio(models.Model):
 class Institucion(models.Model):
     nombre = models.CharField(max_length=64, blank=False, null=False)
     direccion = models.CharField(max_length=150)
+    descripcion = models.TextField()
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='institucion')
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='institucion')
     disponible = models.BooleanField(default=True)
+    cant_images = property(lambda self: self.imagenes.count())
 
     def __str__(self):
         return self.nombre
