@@ -12,7 +12,12 @@ from core.models import Provincia, Municipio, Institucion, InstImagenes
 
 @login_required
 def dashboard(request):
-    return render(template_name='dashboard/dashboard.html', request=request)
+    context = {
+        'municipio': Municipio.objects.count(),
+        'provincia': Provincia.objects.count(),
+        'instituciones': Institucion.objects.count(),
+    }
+    return render(template_name='dashboard/dashboard.html', request=request, context=context)
 
 
 def error_404_view(request, exception=None):

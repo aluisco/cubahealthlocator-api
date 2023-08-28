@@ -45,13 +45,21 @@
                                 <td>{{ provincia.total_mun }}</td>
                                 <td>{{ provincia.total_int }}</td>
                                 <td>
-                                    <button type="button" class="btn small-button btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editModal" data-bs-whatever="{{ provincia.nombre }}"
+                                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#infoModal" data-bs-nombre="{{ provincia.nombre }}"
+                                            data-bs-descripcion="{{ provincia.descripcion }}"
+                                            data-bs-imagen="{{ provincia.imagen }}"><i class="fas fa-edit"></i>
+                                        Detalles
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#editModal" data-bs-nombre="{{ provincia.nombre }}"
+                                            data-bs-descripcion="{{ provincia.descripcion }}"
+                                            data-bs-imagen="{{ provincia.imagen }}"
                                             value="{{ provincia.id }}"><i
                                             class="fas fa-edit"></i>
                                         Editar
                                     </button>
-                                    <a class="btn small-button btn-danger"
+                                    <a class="btn btn-sm btn-danger"
                                        href="#" onclick="remove(this.id, {{ provincia.id }})"
                                        id="delete{{ forloop.counter }}"><i class="fas fa-trash"></i> Borrar</a>
                                 </td>
@@ -73,8 +81,20 @@
                     <form>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="provincia-name" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="provincia-name">
+                                <label for="edit-provincia-imagen" class="col-form-label">Imagen:</label>
+                                <div class="text-center mb-4">
+                                    <img id="edit-imagen" width="300" src=""/>
+                                </div>
+                                <input type="file" class="form-control" id="edit-provincia-imagen">
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-provincia-nombre" class="col-form-label">Nombre:</label>
+                                <input type="text" class="form-control" id="edit-provincia-nombre">
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit-provincia-descripcion"
+                                       class="col-form-label">Descripci&oacute;n:</label>
+                                <textarea type="text" class="form-control" id="edit-provincia-descripcion" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -108,6 +128,29 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarModalLabel">Detalles</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <div class="text-center mb-4">
+                                    <img id="info-imagen" width="300" src=""/>
+                                </div>
+                                <label id="info-descripcion" class="col-form-label">Nombre: </label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </main>
 {% endblock content %}
 {% block extra_js %}
@@ -120,14 +163,36 @@
             const editModal = document.getElementById('editModal')
             editModal.addEventListener('show.bs.modal', function (event) {
                 const button = event.relatedTarget
-                const provincia = button.getAttribute('data-bs-whatever')
+                const nombre = button.getAttribute('data-bs-nombre')
+                const descripcion = button.getAttribute('data-bs-descripcion')
+                const imagen = button.getAttribute('data-bs-imagen')
                 const id = button.getAttribute('value')
                 const modalTitle = editModal.querySelector('.modal-title')
-                const modalBodyInput = editModal.querySelector('.modal-body input')
+                const modalBodyInputImagen = editModal.querySelector('#edit-imagen')
+                const modalBodyInputNombre = editModal.querySelector('#edit-provincia-nombre')
+                const modalBodyInputdescripcion = editModal.querySelector('#edit-provincia-descripcion')
                 const modalFooterInput = editModal.querySelector('.modal-footer input')
-                modalTitle.textContent = 'Cambiar Nombre ' + provincia
-                modalBodyInput.value = provincia
+                modalTitle.textContent = 'Editar Provincia ' + nombre
+                modalBodyInputImagen.setAttribute('src', '/images/' + imagen)
+                modalBodyInputNombre.value = nombre
+                modalBodyInputdescripcion.textContent = descripcion
                 modalFooterInput.value = id
+            });
+        });
+
+        $(function () {
+            const infoModal = document.getElementById('infoModal')
+            infoModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget
+                const nombre = button.getAttribute('data-bs-nombre')
+                const imagen = button.getAttribute('data-bs-imagen')
+                const descripcion = button.getAttribute('data-bs-descripcion')
+                const modalTitle = infoModal.querySelector('.modal-title')
+                const modalInfoImagen = infoModal.querySelector('#info-imagen')
+                const modalInfoDescripcion = infoModal.querySelector('#info-descripcion')
+                modalTitle.textContent = 'Detalles ' + nombre
+                modalInfoDescripcion.textContent = descripcion
+                modalInfoImagen.setAttribute('src', '/images/' + imagen)
             });
         });
 
