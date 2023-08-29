@@ -1,10 +1,11 @@
 from django.urls import path
 from core.views import dashboard, ProvinciaListView, ProvinciaDeleteView, ProvinciaUpdate, MunicipioListView, \
     MunicipioDeleteView, MunicipioUpdate, InstitucionListView, InstitucionDeleteView, InstitucionUpdate, MunicipioAdd, \
-    ProvinciaAdd
+    ProvinciaAdd, estadisticas
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
+    path('estadisticas/', estadisticas, name='estadisticas'),
     path('provincias/', ProvinciaListView.as_view(), name='provincia_list'),
     path('provincias/add/', ProvinciaAdd, name='provincia_add'),
     path('provincias/<int:pk>/remove/', ProvinciaDeleteView.as_view(), name='provincia_delete'),

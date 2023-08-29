@@ -20,6 +20,11 @@ def dashboard(request):
     return render(template_name='dashboard/dashboard.html', request=request, context=context)
 
 
+@login_required
+def estadisticas(request):
+    return render(template_name='estadisticas/estadisticas.html', request=request)
+
+
 def error_404_view(request, exception=None):
     return render(request, '404.html')
 
