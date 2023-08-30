@@ -83,6 +83,13 @@
                 }
             })
         {% endif %}
+
+        $(function() {
+        {% if request.user.is_authenticated %}
+            window.location{% url 'dashboard' %};
+        {% endif %}
+        })
+
     </script>
     </body>
 {% endblock body %}

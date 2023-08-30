@@ -35,7 +35,7 @@ class MunicipioDetail(APIView):
 
 class InstitucionList(APIView):
     def get(self, request):
-        instituciones = Institucion.objects.all()
+        instituciones = Institucion.objects.filter(disponible=True)
         data = InstitucionSerializers(instituciones, many=True).data
         return Response(data)
 
@@ -49,7 +49,7 @@ class InstitucionDetail(APIView):
 
 class ImagenesList(APIView):
     def get(self, request):
-        imagenes = InstImagenes.objects.all()
+        imagenes = InstImagenes.objects.filter(disponible=True)
         data = InstImagenesSerializers(imagenes, many=True).data
         return Response(data)
 
