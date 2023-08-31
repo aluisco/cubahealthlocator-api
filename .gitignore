@@ -3,4 +3,7 @@ venv/
 __pycache__/
 smcbackend/settings.py
 images/inst_img/
+images/provincia/
+images/institucion/
+images/municipio/
 .DS_Store

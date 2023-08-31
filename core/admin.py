@@ -47,7 +47,7 @@ class InstitucionAdmin(admin.ModelAdmin):
     list_filter = ['municipio']
     list_editable = ['disponible']
     list_per_page = 15
-    fields = ['nombre', 'direccion', 'descripcion', 'provincia', 'municipio', 'disponible']
+    fields = ['nombre', 'direccion', 'descripcion', 'imagen', 'provincia', 'municipio', 'disponible']
     inlines = [
         ImageInline,
     ]
@@ -55,4 +55,4 @@ class InstitucionAdmin(admin.ModelAdmin):
     def cant_images(self, obj):
         return obj.cant_images
 
-    cant_images.short_description = 'Cant. Imagen(es)'
+    cant_images.short_description = 'Imagen(es) Adicionales'

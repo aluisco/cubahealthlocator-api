@@ -47,6 +47,7 @@ class Institucion(models.Model):
     nombre = models.CharField(max_length=64, blank=False, null=False)
     direccion = models.CharField(max_length=150)
     descripcion = models.TextField()
+    imagen = models.ImageField('Imagen', upload_to='institucion', help_text='Imagen de la Institucion.')
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='institucion')
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='institucion')
     disponible = models.BooleanField(default=True)
