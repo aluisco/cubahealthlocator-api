@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'core',
     'api',
+    'widget_tweaks',
     'baton.autodiscover',
 ]
 
@@ -231,3 +232,6 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 3600
 SESSION_SAVE_EVERY_REQUEST = True
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
