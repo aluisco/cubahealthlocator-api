@@ -29,7 +29,7 @@ class ProvinciaAdmin(admin.ModelAdmin):
 class MunicipioAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
     search_fields = ['provincia', 'nombre']
-    list_display = ['provincia', 'nombre', 'total_int']
+    list_display = ['nombre', 'provincia', 'total_int']
     list_filter = ['provincia']
     list_per_page = 15
 
