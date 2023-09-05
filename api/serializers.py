@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from core.models import Provincia, Municipio, Institucion, InstImagenes
+from core.models import Provincia, Municipio, Institucion, Imagenes
 
 
 class ProvinciaSerializers(ModelSerializer):
@@ -21,7 +21,7 @@ class InstitucionSerializers(ModelSerializer):
         fields = '__all__'
 
 
-class InstImagenesSerializers(ModelSerializer):
+class ImagenesSerializers(ModelSerializer):
     class Meta:
-        model = InstImagenes
+        model = Imagenes
         fields = '__all__'

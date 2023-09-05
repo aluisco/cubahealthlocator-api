@@ -3,7 +3,7 @@ from core.models import *
 
 
 class ImageInline(admin.TabularInline):
-    model = InstImagenes
+    model = Imagenes
     extra = 1
 
 
@@ -47,7 +47,8 @@ class InstitucionAdmin(admin.ModelAdmin):
     list_filter = ['municipio']
     list_editable = ['disponible']
     list_per_page = 15
-    fields = ['nombre', 'direccion', 'descripcion', 'imagen', 'provincia', 'municipio', 'disponible']
+    fields = ['nombre', 'direccion', 'descripcion_es', 'descripcion_en', 'imagen', 'provincia', 'municipio',
+              'disponible']
     inlines = [
         ImageInline,
     ]

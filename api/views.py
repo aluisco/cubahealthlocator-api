@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from core.models import Provincia, Municipio, Institucion, InstImagenes
-from api.serializers import ProvinciaSerializers, MunicipioSerializers, InstitucionSerializers, InstImagenesSerializers
+from core.models import Provincia, Municipio, Institucion, Imagenes
+from api.serializers import ProvinciaSerializers, MunicipioSerializers, InstitucionSerializers, ImagenesSerializers
 
 
 class ProvinciaList(APIView):
@@ -49,13 +49,13 @@ class InstitucionDetail(APIView):
 
 class ImagenesList(APIView):
     def get(self, request):
-        imagenes = InstImagenes.objects.filter(disponible=True)
-        data = InstImagenesSerializers(imagenes, many=True).data
+        imagenes = Imagenes.objects.filter(disponible=True)
+        data = ImagenesSerializers(imagenes, many=True).data
         return Response(data)
 
 
 class ImagenesDetail(APIView):
     def get(self, request, pk):
-        imagen = get_object_or_404(InstImagenes, pk=pk)
-        data = InstImagenesSerializers(imagen).data
+        imagen = get_object_or_404(Imagenes, pk=pk)
+        data = ImagenesSerializers(imagen).data
         return Response(data)

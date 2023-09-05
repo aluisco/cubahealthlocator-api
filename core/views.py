@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DeleteView
-from core.models import Provincia, Municipio, Institucion, InstImagenes
+from core.models import Provincia, Municipio, Institucion, Imagenes
 
 
 @login_required
