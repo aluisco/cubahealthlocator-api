@@ -2,11 +2,6 @@ from django.contrib import admin
 from core.models import *
 
 
-class ImageInline(admin.TabularInline):
-    model = Imagenes
-    extra = 1
-
-
 @admin.register(Provincia)
 class ProvinciaAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
@@ -43,17 +38,9 @@ class MunicipioAdmin(admin.ModelAdmin):
 class InstitucionAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
     search_fields = ['nombre']
-    list_display = ['nombre', 'direccion', 'provincia', 'municipio', 'cant_images', 'disponible']
+    list_display = ['nombre', 'direccion', 'phone', 'provincia', 'municipio', 'disponible']
     list_filter = ['municipio']
     list_editable = ['disponible']
     list_per_page = 15
-    fields = ['nombre', 'direccion', 'descripcion_es', 'descripcion_en', 'imagen', 'provincia', 'municipio',
+    fields = ['nombre', 'direccion', 'phone', 'descripcion_es', 'descripcion_en', 'imagen', 'provincia', 'municipio',
               'disponible']
-    inlines = [
-        ImageInline,
-    ]
-
-    def cant_images(self, obj):
-        return obj.cant_images
-
-    cant_images.short_description = 'Imagen(es) Adicionales'

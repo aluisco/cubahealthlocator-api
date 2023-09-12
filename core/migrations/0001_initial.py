@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nombre', models.CharField(max_length=32)),
-                ('photo', models.ImageField(help_text='Imagenes del lugar.', upload_to=core.models.photo_path, verbose_name='Imagen')),
+                ('photo', models.ImageField(help_text='Imagenes del lugar.', upload_to='', verbose_name='Imagen')),
                 ('institucion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='institucion_id', to='core.institucion')),
             ],
             options={

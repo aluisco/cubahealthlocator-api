@@ -14,13 +14,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='municipio',
             name='imagen',
-            field=models.ImageField(default=1, help_text='Imagen del Municipio.', upload_to=core.models.photo_path, verbose_name='Imagen'),
+            field=models.ImageField(default=1, help_text='Imagen del Municipio.', upload_to='', verbose_name='Imagen'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='provincia',
             name='imagen',
-            field=models.ImageField(default=1, help_text='Imagen de la Provincia.', upload_to=core.models.photo_path, verbose_name='Imagen'),
+            field=models.ImageField(default=1, help_text='Imagen de la Provincia.', upload_to='', verbose_name='Imagen'),
             preserve_default=False,
         ),
     ]

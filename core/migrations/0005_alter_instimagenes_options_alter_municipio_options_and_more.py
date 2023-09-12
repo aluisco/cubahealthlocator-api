@@ -34,6 +34,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='instimagenes',
             name='photo',
-            field=models.ImageField(help_text='Imágenes del lugar.', upload_to=core.models.photo_path, verbose_name='Imagen'),
+            field=models.ImageField(help_text='Imágenes del lugar.', upload_to='', verbose_name='Imagen'),
         ),
     ]
