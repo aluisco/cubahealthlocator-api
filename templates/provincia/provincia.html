@@ -15,10 +15,9 @@
                     <li class="breadcrumb-item active">Provincias</li>
                 </ol>
                 <div class="mb-4">
-                    <button type="button" class="btn small-button btn-success btn-add" data-bs-toggle="modal"
-                            data-bs-target="#agregarModal"><i class="fas fa-plus"></i>
+                    <a class="btn btn-success btn-add" href="{% url 'provincia_add' %}"><i class="fas fa-plus"></i>
                         Agregar
-                    </button>
+                    </a>
                 </div>
             </row>
             <div class="card mb-4">
@@ -45,20 +44,17 @@
                                 <td>{{ provincia.total_mun }}</td>
                                 <td>{{ provincia.total_int }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
                                             data-bs-target="#infoModal" data-bs-nombre="{{ provincia.nombre }}"
-                                            data-bs-descripcion="{{ provincia.descripcion }}"
-                                            data-bs-imagen="{{ provincia.imagen }}"><i class="fas fa-edit"></i>
+                                            data-bs-descripcion-es="{{ provincia.descripcion_es }}"
+                                            data-bs-descripcion-en="{{ provincia.descripcion_en }}"
+                                            data-bs-imagen="{{ provincia.imagen }}"><i class="fas fa-eye"></i>
                                         Detalles
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editModal" data-bs-nombre="{{ provincia.nombre }}"
-                                            data-bs-descripcion="{{ provincia.descripcion }}"
-                                            data-bs-imagen="{{ provincia.imagen }}"
-                                            value="{{ provincia.id }}"><i
+                                    <a class="btn btn-sm btn-primary" href="{% url 'provincia_edit' provincia.pk %}"><i
                                             class="fas fa-edit"></i>
                                         Editar
-                                    </button>
+                                    </a>
                                     <a class="btn btn-sm btn-danger"
                                        href="#" onclick="remove(this.id, {{ provincia.id }})"
                                        id="delete{{ forloop.counter }}"><i class="fas fa-trash"></i> Borrar</a>
@@ -70,65 +66,8 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Editar Provincia</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="edit-provincia-imagen" class="col-form-label">Imagen:</label>
-                                <div class="text-center mb-4">
-                                    <img id="edit-imagen" width="300" src=""/>
-                                </div>
-                                <input type="file" class="form-control" id="edit-provincia-imagen">
-                            </div>
-                            <div class="mb-3">
-                                <label for="edit-provincia-nombre" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="edit-provincia-nombre">
-                            </div>
-                            <div class="mb-3">
-                                <label for="edit-provincia-descripcion"
-                                       class="col-form-label">Descripci&oacute;n:</label>
-                                <textarea type="text" class="form-control" id="edit-provincia-descripcion" rows="5"></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <input type="hidden" id="id_provincia">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="change_name()">Guardar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="agregarModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="agregarModalLabel">Agregar Provincia</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="add-provincia-name" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="add-provincia-name">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="agregar_provincia()">Guardar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal modal-lg fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,7 +80,11 @@
                                 <div class="text-center mb-4">
                                     <img id="info-imagen" width="300" src=""/>
                                 </div>
-                                <label id="info-descripcion" class="col-form-label">Nombre: </label>
+                                <p>Descripci&oacute;n Espa&ntilde;ol:</p>
+                                <label id="info-descripcion-es" class="col-form-label"></label>
+                                <hr/>
+                                <p>Descripci&oacute;n Ingl&eacute;s:</p>
+                                <label id="info-descripcion-en" class="col-form-label"></label>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -160,38 +103,20 @@
             src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script type="application/javascript">
         $(function () {
-            const editModal = document.getElementById('editModal')
-            editModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget
-                const nombre = button.getAttribute('data-bs-nombre')
-                const descripcion = button.getAttribute('data-bs-descripcion')
-                const imagen = button.getAttribute('data-bs-imagen')
-                const id = button.getAttribute('value')
-                const modalTitle = editModal.querySelector('.modal-title')
-                const modalBodyInputImagen = editModal.querySelector('#edit-imagen')
-                const modalBodyInputNombre = editModal.querySelector('#edit-provincia-nombre')
-                const modalBodyInputdescripcion = editModal.querySelector('#edit-provincia-descripcion')
-                const modalFooterInput = editModal.querySelector('.modal-footer input')
-                modalTitle.textContent = 'Editar Provincia ' + nombre
-                modalBodyInputImagen.setAttribute('src', '/images/' + imagen)
-                modalBodyInputNombre.value = nombre
-                modalBodyInputdescripcion.textContent = descripcion
-                modalFooterInput.value = id
-            });
-        });
-
-        $(function () {
             const infoModal = document.getElementById('infoModal')
             infoModal.addEventListener('show.bs.modal', function (event) {
                 const button = event.relatedTarget
                 const nombre = button.getAttribute('data-bs-nombre')
                 const imagen = button.getAttribute('data-bs-imagen')
-                const descripcion = button.getAttribute('data-bs-descripcion')
+                const descripcion_es = button.getAttribute('data-bs-descripcion-es')
+                const descripcion_en = button.getAttribute('data-bs-descripcion-en')
                 const modalTitle = infoModal.querySelector('.modal-title')
                 const modalInfoImagen = infoModal.querySelector('#info-imagen')
-                const modalInfoDescripcion = infoModal.querySelector('#info-descripcion')
+                const modalInfoDescripcionEs = infoModal.querySelector('#info-descripcion-es')
+                const modalInfoDescripcionEn = infoModal.querySelector('#info-descripcion-en')
                 modalTitle.textContent = 'Detalles ' + nombre
-                modalInfoDescripcion.textContent = descripcion
+                modalInfoDescripcionEs.textContent = descripcion_es
+                modalInfoDescripcionEn.textContent = descripcion_en
                 modalInfoImagen.setAttribute('src', '/images/' + imagen)
             });
         });
@@ -238,77 +163,6 @@
                 type: 'POST',
                 url: "{% url 'provincia_delete' 1234 %}".replace(/1234/, p_id),
                 data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'request_data': p_id},
-                success: function () {
-                    location.reload();
-                }
-            });
-        }
-
-        function change_name() {
-            Swal.fire({
-                title: '&#191;Est&aacute; seguro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '&#161;S&iacute;, editar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let nombre = document.getElementById('provincia-name').value;
-                    let p_id = document.getElementById('id_provincia').value;
-                    $('#editModal').modal('hide');
-                    Swal.fire(
-                        '&#161;Editado!',
-                        'La entrada de la Provincia fue editada.',
-                        'success'
-                    )
-                    update(p_id, nombre);
-                } else {
-                    $('#editModal').modal('hide');
-                }
-            })
-        }
-
-        function update(p_id, nombre) {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'provincia_edit' 1234 %}".replace(/1234/, p_id),
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'pk': p_id, 'nombre': nombre},
-                success: function () {
-                    location.reload();
-                }
-            });
-        }
-
-        function agregar_provincia() {
-            Swal.fire({
-                title: '&#191;Desea agregar la Provincia?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'S&iacute;'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let nombre = document.getElementById('add-provincia-name').value;
-                    $('#editModal').modal('hide');
-                    Swal.fire(
-                        '&#161;Agregado!',
-                        'La Provincia fue adicionada.',
-                        'success'
-                    )
-                    agregar(nombre);
-                } else {
-                    $('#editModal').modal('hide');
-                }
-            })
-        }
-
-        function agregar(nombre) {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'provincia_add' %}",
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'nombre': nombre},
                 success: function () {
                     location.reload();
                 }

@@ -15,10 +15,10 @@
                     <li class="breadcrumb-item active">Municipios</li>
                 </ol>
                 <div class="mb-4">
-                    <button type="button" class="btn small-button btn-success btn-add" data-bs-toggle="modal"
-                            data-bs-target="#agregarModal"><i class="fas fa-plus"></i>
+                    <a class="btn small-button btn-success btn-add" href="{% url 'municipios_add' %}"><i
+                            class="fas fa-plus"></i>
                         Agregar
-                    </button>
+                    </a>
                 </div>
             </row>
             <div class="card mb-4">
@@ -45,15 +45,19 @@
                                 <td>{{ municipio.provincia.nombre }}</td>
                                 <td>{{ municipio.total_int }}</td>
                                 <td>
-                                    <button type="button" class="btn small-button btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editModal"
-                                            data-bs-whatever="{{ municipio.nombre }}"
-                                            data-bs-provincia="{{ municipio.provincia.nombre }}"
-                                            value="{{ municipio.id }}"><i
+                                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#infoModal" data-bs-nombre="{{ municipio.nombre }}"
+                                            data-bs-provincia="{{ municipio.provincia }}"
+                                            data-bs-descripcion-es="{{ municipio.descripcion_es }}"
+                                            data-bs-descripcion-en="{{ municipio.descripcion_en }}"
+                                            data-bs-imagen="{{ municipio.imagen }}"><i class="fas fa-eye"></i>
+                                        Detalles
+                                    </button>
+                                    <a class="btn btn-sm btn-primary" href="{% url 'municipios_edit' municipio.pk %}"><i
                                             class="fas fa-edit"></i>
                                         Editar
-                                    </button>
-                                    <a class="btn small-button btn-danger"
+                                    </a>
+                                    <a class="btn btn-sm btn-danger"
                                        href="#" onclick="remove(this.id, {{ municipio.id }})"
                                        id="delete{{ forloop.counter }}"><i class="fas fa-trash"></i> Borrar</a>
                                 </td>
@@ -64,63 +68,35 @@
                 </div>
             </div>
         </div>
-
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal modal-lg fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Editar Municipio</h5>
+                        <h5 class="modal-title" id="agregarModalLabel">Detalles</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form>
                         <div class="modal-body">
-                            <div class="mb3">
-                                <p>Provincia: <span><label id="provincia_select"></label></span></p>
-                            </div>
                             <div class="mb-3">
-                                <label for="municipio-name" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="municipio-name">
+                                <div class="text-center mb-4">
+                                    <img id="info-imagen" width="300" src=""/>
+                                </div>
+                                <p>Descripci&oacute;n Espa&ntilde;ol:</p>
+                                <label id="info-descripcion-es" class="col-form-label"></label>
+                                <hr/>
+                                <p>Descripci&oacute;n Ingl&eacute;s:</p>
+                                <label id="info-descripcion-en" class="col-form-label"></label>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="hidden" id="id_municipio">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="change_name()">Guardar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="agregarModal" tabindex="-1" aria-labelledby="agregarModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="agregarModalLabel">Agregar Municipio</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form>
-                        <div class="modal-body">
-                            <div class="mb3">
-                                <label for="provincia-select" class="col-form-label">Provincia:</label>
-                                <select class="form-select" id="provincia-select">
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="add-municipio-name" class="col-form-label">Nombre:</label>
-                                <input type="text" class="form-control" id="add-municipio-name">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="agregar_municipio()">Guardar</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </main>
-
 {% endblock content %}
 {% block extra_js %}
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -129,20 +105,22 @@
             src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script type="application/javascript">
         $(function () {
-            var editModal = document.getElementById('editModal')
-            editModal.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget
-                var municipio = button.getAttribute('data-bs-whatever')
-                var provincia = button.getAttribute('data-bs-provincia')
-                var id = button.getAttribute('value')
-                var modalTitle = editModal.querySelector('.modal-title')
-                var modalBodyInput = editModal.querySelector('.modal-body input')
-                var modalBodyLabel = editModal.querySelector('#provincia_select')
-                var modalFooterInput = editModal.querySelector('.modal-footer input')
-                modalTitle.textContent = 'Cambiar Nombre ' + municipio
-                modalBodyInput.value = municipio
-                modalFooterInput.value = id
-                modalBodyLabel.textContent = provincia
+            const infoModal = document.getElementById('infoModal')
+            infoModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget
+                const nombre = button.getAttribute('data-bs-nombre')
+                const imagen = button.getAttribute('data-bs-imagen')
+                const provincia = button.getAttribute('data-bs-provincia')
+                const descripcion_es = button.getAttribute('data-bs-descripcion-es')
+                const descripcion_en = button.getAttribute('data-bs-descripcion-en')
+                const modalTitle = infoModal.querySelector('.modal-title')
+                const modalInfoImagen = infoModal.querySelector('#info-imagen')
+                const modalInfoDescripcionEs = infoModal.querySelector('#info-descripcion-es')
+                const modalInfoDescripcionEn = infoModal.querySelector('#info-descripcion-en')
+                modalTitle.textContent = 'Detalles ' + nombre + ' - Provincia ' + provincia
+                modalInfoDescripcionEs.textContent = descripcion_es
+                modalInfoDescripcionEn.textContent = descripcion_en
+                modalInfoImagen.setAttribute('src', '/images/' + imagen)
             });
         });
 
@@ -204,78 +182,6 @@
                 type: 'POST',
                 url: "{% url 'municipios_delete' 1234 %}".replace(/1234/, p_id),
                 data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'request_data': p_id},
-                success: function () {
-                    location.reload();
-                }
-            });
-        }
-
-        function change_name() {
-            Swal.fire({
-                title: '&#191;Est&aacute; seguro?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '&#161;S&iacute;, editar!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let nombre = document.getElementById('municipio-name').value;
-                    let p_id = document.getElementById('id_municipio').value;
-                    $('#editModal').modal('hide');
-                    Swal.fire(
-                        '&#161;Editado!',
-                        'La entrada del Municipio fue editada.',
-                        'success'
-                    )
-                    update(p_id, nombre);
-                } else {
-                    $('#editModal').modal('hide');
-                }
-            })
-        }
-
-        function update(p_id, nombre) {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'municipios_edit' 1234 %}".replace(/1234/, p_id),
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'pk': p_id, 'nombre': nombre},
-                success: function () {
-                    location.reload();
-                }
-            });
-        }
-        
-        function agregar_municipio() {
-            Swal.fire({
-                title: '&#191;Desea agregar el Municipio?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'S&iacute;'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    let nombre = document.getElementById('add-municipio-name').value;
-                    let prov_id = document.getElementById('provincia-select').value;
-                    $('#editModal').modal('hide');
-                    Swal.fire(
-                        '&#161;Editado!',
-                        'El Municipio fue adicionado.',
-                        'success'
-                    )
-                    agregar(prov_id, nombre);
-                } else {
-                    $('#editModal').modal('hide');
-                }
-            })
-        }
-
-        function agregar(p_id, nombre) {
-            $.ajax({
-                type: 'POST',
-                url: "{% url 'municipios_add' %}",
-                data: {csrfmiddlewaretoken: '{{ csrf_token }}', 'id': p_id, 'nombre': nombre},
                 success: function () {
                     location.reload();
                 }

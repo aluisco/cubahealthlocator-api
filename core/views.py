@@ -1,12 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, DeleteView
+from django.views.generic import ListView, DeleteView, CreateView, UpdateView
+
+from core.forms import ProvinciaForm, MunicipioForm, InstitucionForm
 from core.models import Provincia, Municipio, Institucion
 
 
@@ -60,32 +63,27 @@ class ProvinciaDeleteView(LoginRequiredMixin, DeleteView):
         pid = self.kwargs['id']
         province = Provincia.objects.filter(id=pid)
         province.delete()
-        return HttpResponse('')
+        return reverse_lazy('provincia_list')
 
 
-@login_required
-@csrf_exempt
-def ProvinciaUpdate(request, pk):
-    if request.method == 'POST':
-        provincia = Provincia.objects.get(pk=pk)
-        nombre = request.POST['nombre']
-        provincia.nombre = nombre
-        provincia.save()
-        return HttpResponse('')
-    else:
-        return redirect(reverse_lazy('provincia_list'))
+class ProvinciaAddView(LoginRequiredMixin, CreateView):
+    template_name = 'provincia/provincia_add.html'
+    form_class = ProvinciaForm
+    success_url = reverse_lazy('provincia_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(ProvinciaAddView, self).get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        return super(ProvinciaAddView, self).form_valid(form)
 
 
-@login_required
-@csrf_exempt
-def ProvinciaAdd(request):
-    if request.method == 'POST':
-        nombre = request.POST['nombre']
-        nuevo = Provincia(nombre=nombre)
-        nuevo.save()
-        return HttpResponse('')
-    else:
-        return redirect(reverse_lazy('provincia_list'))
+class ProvinciaEditView(LoginRequiredMixin, UpdateView):
+    template_name = 'provincia/provincia_edit.html'
+    model = Provincia
+    form_class = ProvinciaForm
+    success_url = reverse_lazy('provincia_list')
 
 
 class MunicipioListView(LoginRequiredMixin, ListView):
@@ -118,30 +116,24 @@ class MunicipioDeleteView(LoginRequiredMixin, DeleteView):
         return HttpResponse('')
 
 
-@login_required
-@csrf_exempt
-def MunicipioUpdate(request, pk):
-    if request.method == 'POST':
-        municipio = Municipio.objects.get(pk=pk)
-        nombre = request.POST['nombre']
-        municipio.nombre = nombre
-        municipio.save()
-        return HttpResponse('')
-    else:
-        return redirect(reverse_lazy('municipio_list'))
+class MunicipioAddView(LoginRequiredMixin, CreateView):
+    template_name = 'municipio/municipio_add.html'
+    form_class = MunicipioForm
+    success_url = reverse_lazy('municipios_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(MunicipioAddView, self).get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        return super(MunicipioAddView, self).form_valid(form)
 
 
-@login_required
-@csrf_exempt
-def MunicipioAdd(request):
-    if request.method == 'POST':
-        provincia = request.POST['id']
-        nombre = request.POST['nombre']
-        nuevo = Municipio(nombre=nombre, provincia_id=provincia)
-        nuevo.save()
-        return HttpResponse('')
-    else:
-        return redirect(reverse_lazy('municipio_list'))
+class MunicipioEditView(LoginRequiredMixin, UpdateView):
+    template_name = 'municipio/municipio_edit.html'
+    model = Municipio
+    form_class = MunicipioForm
+    success_url = reverse_lazy('municipios_list')
 
 
 class InstitucionListView(LoginRequiredMixin, ListView):
@@ -171,19 +163,26 @@ class InstitucionDeleteView(LoginRequiredMixin, DeleteView):
         pid = self.kwargs['id']
         institucion = Institucion.objects.filter(id=pid)
         institucion.delete()
-        return HttpResponse('')
+        return reverse_lazy('instituciones_list')
 
 
-@login_required
-@csrf_exempt
-def InstitucionUpdate(request, pk):
-    if request.method == 'POST':
-        institucion = Institucion.objects.get(pk=pk)
-        nombre = request.POST['nombre']
-        direccion = request.POST['direccion']
-        institucion.nombre = nombre
-        institucion.direccion = direccion
-        institucion.save()
-        return HttpResponse('')
-    else:
-        return redirect(reverse_lazy('instituciones_list'))
+class InstitucionAddView(LoginRequiredMixin, CreateView):
+    template_name = 'institucion/institucion_add.html'
+    form_class = InstitucionForm
+    success_url = reverse_lazy('instituciones_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(InstitucionAddView, self).get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        return super(InstitucionAddView, self).form_valid(form)
+
+
+class InstitucionEditView(LoginRequiredMixin, UpdateView):
+    template_name = 'institucion/institucion_edit.html'
+    model = Institucion
+    form_class = InstitucionForm
+    success_url = reverse_lazy('instituciones_list')
+
+

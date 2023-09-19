@@ -1,0 +1,55 @@
+{% extends 'site_base.html' %}
+{% load static crispy_forms_filters %}
+{% block title %}Provincias{{ supper }}{% endblock title %}
+{% block extra_styles %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+{% endblock extra_styles %}
+{% block content %}
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Provincias</h1>
+            <row>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item">Lugares</li>
+                    <li class="breadcrumb-item">Provincias</li>
+                    <li class="breadcrumb-item active">Editar</li>
+                </ol>
+            </row>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-plus-square me-1"></i>
+                    Editar Provincia
+                </div>
+                <div class="card-body">
+                    <form id="provincia-form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form | crispy }}
+                        <small>Los items marcados con * son obligatorios.</small>
+                        <a class="btn btn-danger float-end" href="{% url 'provincia_list' %}">Cancelar</a>
+                        <a class="btn btn-primary float-end" href="#" onclick="save()" style="margin-right: 10px;">Modificar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}
+{% block extra_js %}
+    <script>
+        function save() {
+            Swal.fire({
+                title: '&#191;Desea guardar los cambios?',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    document.getElementById("provincia-form").submit();
+                }
+            })
+        }
+    </script>
+{% endblock extra_js %}

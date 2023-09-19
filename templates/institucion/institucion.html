@@ -9,9 +9,17 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Instituciones</h1>
-            <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">Instituciones</li>
-            </ol>
+            <row>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">Instituciones</li>
+                </ol>
+                <div class="mb-4">
+                    <a class="btn btn-success btn-add" href="{% url 'instituciones_add' %}"><i class="fas fa-plus"></i>
+                        Agregar
+                    </a>
+                </div>
+            </row>
+
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-table me-1"></i>
@@ -23,10 +31,10 @@
                         <tr class="text-center">
                             <th>No</th>
                             <th>Nombre</th>
+                            <th>Tel&eacute;fono</th>
                             <th>Direcci&oacute;n</th>
                             <th>Provincia</th>
                             <th>Municipio</th>
-                            <th>Cant. Im&aacute;genes</th>
                             <th>Acciones</th>
                         </tr>
                         </thead>
@@ -35,17 +43,16 @@
                             <tr class="tr-shadow">
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ institucion.nombre }}</td>
+                                <td>{{ institucion.phone }}</td>
                                 <td>{{ institucion.direccion }}</td>
                                 <td>{{ institucion.provincia.nombre }}</td>
                                 <td>{{ institucion.municipio.nombre }}</td>
-                                <td>{{ institucion.imagenes.count }}</td>
-                                <td><a class="btn btn-sm btn-success"><i class="fas fa-camera"></i> Im&aacute;genes</a>
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editModal" data-bs-whatever="{{ municipio.nombre }}"
-                                            value="{{ municipio.id }}"><i
+                                <td><a class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Detalles</a>
+                                    <a class="btn btn-sm btn-primary"
+                                       href="{% url 'instituciones_edit' institucion.pk %}"><i
                                             class="fas fa-edit"></i>
                                         Editar
-                                    </button>
+                                    </a>
                                     <a class="btn btn-sm btn-danger"
                                        href="#" onclick="remove(this.id, {{ municipio.id }})"
                                        id="delete{{ forloop.counter }}"><i class="fas fa-trash"></i> Borrar</a>
