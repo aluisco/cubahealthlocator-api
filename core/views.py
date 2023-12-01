@@ -19,6 +19,7 @@ def dashboard(request):
         'municipio': Municipio.objects.count(),
         'provincia': Provincia.objects.count(),
         'instituciones': Institucion.objects.count(),
+        'urgencia': Institucion.objects.filter(urgencia=True).count(),
     }
     return render(template_name='dashboard/dashboard.html', request=request, context=context)
 

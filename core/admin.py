@@ -34,13 +34,23 @@ class MunicipioAdmin(admin.ModelAdmin):
     total_int.short_description = 'Total de Institucion(es)'
 
 
+@admin.register(Tipo)
+class TipoAdmin(admin.ModelAdmin):
+    empty_value_display = '-No hay datos-'
+    search_fields = ['nombre']
+    list_display = ['nombre']
+    list_filter = ['nombre']
+    list_per_page = 15
+    fields = ['nombre']
+
+
 @admin.register(Institucion)
 class InstitucionAdmin(admin.ModelAdmin):
     empty_value_display = '-No hay datos-'
     search_fields = ['nombre']
-    list_display = ['nombre', 'direccion', 'phone', 'provincia', 'municipio', 'disponible']
+    list_display = ['nombre', 'tipo', 'direccion', 'phone', 'provincia', 'municipio', 'disponible']
     list_filter = ['municipio']
     list_editable = ['disponible']
     list_per_page = 15
-    fields = ['nombre', 'direccion', 'phone', 'descripcion_es', 'descripcion_en', 'imagen', 'provincia', 'municipio',
-              'disponible']
+    fields = ['nombre', 'tipo', 'urgencia', 'direccion', 'phone', 'descripcion_es', 'descripcion_en', 'imagen', 'provincia',
+              'municipio', 'disponible']

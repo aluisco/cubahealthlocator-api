@@ -35,6 +35,18 @@ class Municipio(models.Model):
         verbose_name_plural = 'Municipios'
 
 
+class Tipo(models.Model):
+    nombre = models.CharField(max_length=100, blank=False, null=False)
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        ordering = ['nombre']
+        verbose_name = 'Tipo'
+        verbose_name_plural = 'Tipos'
+
+
 class Institucion(models.Model):
     nombre = models.CharField(max_length=64, blank=False, null=False)
     direccion = models.CharField(max_length=150)
@@ -44,6 +56,8 @@ class Institucion(models.Model):
     phone = models.CharField(u'Teléfono', max_length=64)
     provincia = models.ForeignKey(Provincia, on_delete=models.CASCADE, related_name='institucion')
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE, related_name='institucion')
+    tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE, related_name='instutucion')
+    urgencia = models.BooleanField(default=False)
     disponible = models.BooleanField(default=True)
     cant_images = property(lambda self: self.imagenes.count())
 

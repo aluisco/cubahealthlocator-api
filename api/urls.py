@@ -1,6 +1,6 @@
 from django.urls import path
 
-from api.views import ProvinciaList, ProvinciaDetail, MunicipioList, MunicipioDetail, InstitucionList, InstitucionDetail
+from api.views import ProvinciaList, ProvinciaDetail, MunicipioList, MunicipioDetail, InstitucionList, InstitucionDetail, TipoList, TipoDetail
 
 urlpatterns = [
     path("provincia/", ProvinciaList.as_view(), name="api_province_list"),
@@ -9,6 +9,7 @@ urlpatterns = [
     path("municipio/<int:pk>/", MunicipioDetail.as_view(), name="api_municipio_detail"),
     path("institucion/", InstitucionList.as_view(), name="api_institucion_list"),
     path("institucion/<int:pk>/", InstitucionDetail.as_view(), name="api_institucion_detail"),
+    path("tipo/", TipoList.as_view(), name="api_tipo_list"),
+    path("tipo/<int:pk>/", TipoDetail.as_view(), name="api_tipo_detail"),
 ]
-
 
